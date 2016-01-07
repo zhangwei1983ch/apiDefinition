@@ -1,0 +1,146 @@
+swagger: '2.0'
+info:
+  title: News API
+  description: 资讯推荐服务接口
+  version: 1.0.0
+host: api.zx.htsc.com
+schemes:
+  - http
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /hotword:
+    get:
+      summary: 返回热词
+      description: 返回当前分析出来的最热的N个热词
+      parameters:
+        - name: count
+          in: query
+          description: 需要返回的热词总个数
+          required: true
+          type: number
+          format: int
+      tags:
+        - HotWord
+      responses:
+        '200':
+          description: 热词列表
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/HotWord'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /news/{newsId}/relatedNews:
+    get:
+      summary: 推荐阅读
+      description: 返回与某篇新闻相关联的新闻列表
+      parameters:
+        - name: newsId
+          in: path
+          description: 新闻的ID
+          required: true
+          type: number
+      tags:
+        - News
+      responses:
+        '200':
+          description: 新闻列表
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/News'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  HotWord:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: 热词的ID
+      status:
+        type: string
+        description: 热词的状态
+        enum: [
+          "active",
+          "inactive",
+          "unauthorized"
+        ]
+      effectiveTime:
+        type: string
+        description: 热词的进榜时间(dateTime)
+      value:
+        type: string
+        description: 热词本身,如'国企改革'
+      weight:
+        type: integer
+        description: 热词的热度,越大表示越热
+      description:
+        type: string
+        description: 热词及其背景的描述
+      relatedNews:
+        type: array
+        items:
+          $ref: '#/definitions/News'
+      relatedStocks:
+        type: array
+        items: 
+          $ref: '#/definitions/Stock'
+    required:
+      - id
+      - effectiveTime
+      - value
+      - weight
+      - description
+  News:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: 新闻ID
+      title:
+        type: string
+        description: 新闻标题
+      category:
+        type: string
+        description: 新闻类别
+      categoryCode:
+        type: string
+        description: 新闻类别代码
+      publishTime:
+        type: string
+        description: 新闻的发布时间(dateTime)
+      score:
+        type: number
+        description: 新闻与热词/新闻的关联度,值越大表示关联度越高
+    required:
+      - id
+      - score
+  Stock:
+    type: object
+    properties:
+      code:
+        type: string
+        description: 股票代码
+      name:
+        type: string
+        description: 股票名称
+    required:
+      - code
+      - name
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string
