@@ -1,0 +1,61 @@
+swagger: '2.0'
+info:
+  title: Stock API
+  description: 服务接口
+  version: 1.0.0
+host: api.zx.htsc.com
+schemes:
+  - http
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /stocks:
+    get:
+      summary: 返回列表
+      description: 根据查询参数返回
+      parameters:
+        - name: offset
+          in: query
+          description: 需要返回的起始下标
+          required: true
+          type: number
+          format: int
+        - name: limit
+          in: query
+          description: 需要返回的总数
+          required: true
+          type: number
+          format: int
+      tags:
+        - Stock
+      responses:
+        '200':
+          description: 列表
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/News'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  Stock:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: Stock ID
+    required:
+      - id
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string
