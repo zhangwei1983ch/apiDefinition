@@ -1,0 +1,105 @@
+swagger: '2.0'
+info:
+  title: News API
+  description: 服务接口
+  version: 1.0.0
+host: api.zx.htsc.com
+schemes:
+  - http
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /news:
+    get:
+      summary: 返回新闻列表
+      description: 根据查询参数返回N篇新闻
+      parameters:
+        - name: offset
+          in: query
+          description: 需要返回新闻的起始下标
+          required: true
+          type: number
+          format: int
+        - name: limit
+          in: query
+          description: 需要返回的新闻总数
+          required: true
+          type: number
+          format: int
+      tags:
+        - News
+      responses:
+        '200':
+          description: 新闻列表
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/News'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /news/{id}:
+    get:
+      summary: 返回某篇新闻
+      parameters:
+        - name: id
+          in: path
+          description: 
+          required: true
+          type: number
+      tags:
+        - News
+      responses:
+        '200':
+          description: 新闻详情
+          schema:
+            $ref: '#/definitions/News' 
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  News:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: 新闻ID
+      title:
+        type: string
+        description: 新闻标题
+      author:
+        type: string
+        description: 新闻作者
+      category:
+        type: string
+        description: 新闻类别代码
+      categoryDescription:
+        type: string
+        description: 新闻类别描述
+      abstract:
+        type: string
+        description: 新闻内容/摘要
+      publishTime:
+        type: string
+        description: 新闻的发布时间(dateTime)
+      entryTime:
+        type: string
+        description: 新闻的入库时间(dateTime)
+      updateTime:
+        type: string
+        description: 新闻的更新时间(dateTime)
+    required:
+      - id
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string
