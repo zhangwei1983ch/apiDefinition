@@ -1,0 +1,27 @@
+.leftpanel {
+	position: absolute;
+	left: 0px;
+	height: 100%;
+	width: 150px;
+	border-right: 1px solid #ececec;
+}
+
+.leftpanel ul {
+	margin-top: 50px;
+}
+
+.leftpanel ul li {
+	padding: 20px;
+}
+
+.rightpanel {
+	position: absolute;
+	left: 165px;
+	right: 0px;
+	height: 100%
+}
+
+.rightpanel iframe {
+	width: 100%;
+	height: 100%;
+}

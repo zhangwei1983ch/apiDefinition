@@ -10,14 +10,14 @@ basePath: /v1
 produces:
   - application/json
 paths:
-  /hotword:
+  /hotwords:
     get:
-      summary: 返回热词
+      summary: 返回热词列表
       description: 返回当前分析出来的最热的N个热词
       parameters:
         - name: count
           in: query
-          description: 需要返回的热词总个数
+          description: 客户端指定需要返回的热词总个数
           required: true
           type: number
           format: int
@@ -30,6 +30,49 @@ paths:
             type: array
             items:
               $ref: '#/definitions/HotWord'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /hotword/{hotwordId}:
+    get:
+      summary: 返回某个热词的详情
+      description: 返回id是hotwordId的热词的具体信息，包括关联新闻、关联股票。
+      parameters:
+        - name: hotwordId
+          in: path
+          description: 
+          required: true
+          type: number
+      tags:
+        - HotWord
+      responses:
+        '200':
+          description: 热词详情
+          schema:
+            $ref: '#/definitions/HotWord' 
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /solr/hotword:
+    get:
+      summary: 返回某个热词的详情，该接口只供内部的热词审核系统使用，不暴露给外部
+      description: 返回的是通过搜索引擎搜索到的所有与该词关联的新闻，以及与这些新闻相关的股票列表。
+                   热词审核系统会调用该接口，把这些信息展示在审核界面上，由业务人员作进一步修改。
+      parameters:
+        - name: value
+          in: query
+          description: 要查询的热词，如'国企改革'
+          required: true
+          type: string
+      tags:
+        - HotWord
+      responses:
+        '200':
+          description: 热词详情
+          schema:
+            $ref: '#/definitions/HotWord' 
         default:
           description: Unexpected error
           schema:
