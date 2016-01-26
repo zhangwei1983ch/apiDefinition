@@ -1,13 +1,15 @@
 <div>
 	<div class='segment'>
-		<h3 class='segtitle'>1.URL里使用复数名词</h3>
+		<h3 class='segtitle'>1.URL里使用名词,并且用复数</h3>
 		<div class='highlight'>
-			<p>返回股票列表的API GET /stocks</p>
-			<p>返回某个股票的API GET /stocks/601688
+			<p>查询新闻列表 GET /news</p>
+			<p>查询ID是1200001的新闻 GET /news/1200001</p>
+			<p>查询股票列表 GET /stocks</p>
+			<p>查询代码为601688的股票的基本信息 GET /stocks/601688
 		</div>
 	</div>
 	<div class='segment'>
-		<h3 class='segtitle'>2.URL体现当前API的版本</h3>
+		<h3 class='segtitle'>2.完整的接口URL要体现当前API的版本</h3>
 		<div class='highlight'>
 			<p>GET http://api.zx.htsc.com/<span class='code'>v1</span>/stocks
 			</p>
@@ -33,23 +35,23 @@
 			</p>
 
 			<p>字段的选择
-			有时客户端不需要一个资源的所有字段，给API使用者选择字段的能力会提高API可用性。<br />
+			有时客户端不需要一个资源的所有字段, 给API使用者选择字段的能力会提高API可用性。<br />
 			GET /news?fields=id,title,abstract,publishTime
 			</p>
 
 			<p>
-			当然上面的若干个条件可以同时出现,例如下面这个例子<br />
+			当然上面的若干个条件可以同时出现, 如下面这个例子<br />
 			GET /news?publishTime>='2016-01-26T00:00:00Z'&fields=id,title,abstract,publishTime&sort=-publishTime,+title
 			</p>
 		</div>
 	</div>
 
 	<div class='segment'>
-		<h3 class='segtitle'>4.使用Http状态码表示错误,这里只针对GET请求的响应</h3>
+		<h3 class='segtitle'>4.使用HTTP状态码表示GET请求的错误</h3>
 		<div class='highlight'>
-			<p>200 – OK – 请求成功,资源成功返回</p>
+			<p>200 – OK – 请求处理成功,返回资源</p>
 			<p>304 – Not Modified – 客户端使用缓存数据</p>
-			<p>400 – Bad Request – 请求无效，需要附加细节解释如 "JSON无效"</p>
+			<p>400 – Bad Request – 请求无效，可以附加细节说明如'请求参数无效'</p>
 			<p>401 – Unauthorized – 用户尚未认证</p>
 			<p>403 – Forbidden – 服务器已理解请求,但拒绝服务或这种请求的访问是不允许的</p>
 			<p>404 – Not found – 没有发现该资源</p>
@@ -61,7 +63,7 @@
 		<h3 class='segtitle'>5.使用子资源表达关系</h3>
 		<div class='highlight'>
 			<p>如果一个资源与另外一个资源有关联关系,使用子资源<br />
-			GET /stocks/601688/balancesheet 返回股票代码是601688的股票基础数据的同时也附带它的所有利润表信息
+			GET /stocks/601688/balancesheet 查询代码是601688股票的基础数据以及它的资产负债表
 			</p>
 		</div>
 	</div>
